@@ -1,16 +1,8 @@
-import { readCsv } from "./readers/csv-reader"
-import { buildGoalMessage } from "./services/message-services"
+import { startDispatchJob } from "./jobs/hourly-dispatch-job";
 
-async function main() {
-  const stores = await readCsv("data/stores-goals.csv")
-
-  for (const store of stores) {
-    const message = buildGoalMessage(store)
-
-    console.log("Enviando para:", store.coordinatorPhone)
-    console.log(message)
-    console.log("-------------")
-  }
+function main() {
+	console.log("Aplicação iniciada.");
+	startDispatchJob();
 }
 
-main()
+main();
