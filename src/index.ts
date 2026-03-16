@@ -1,8 +1,18 @@
-import { startDispatchJob } from "./jobs/hourly-dispatch-job";
+import { readCsv } from "./readers/csv-reader"
+import { buildGoalMessage } from "./services/message-services"
+import { sendWhatsappMessage } from "./senders/whatsapp-sender"
 
-function main() {
-	console.log("Aplicação iniciada.");
-	startDispatchJob();
+async function main() {
+  const stores = await readCsv("data/stores-goals.csv")
+
+  for (const store of stores) {
+    const message = buildGoalMessage(store)
+
+    await sendWhatsappMessage(
+      store.coordinatorPhone,
+      message
+    )
+  }
 }
 
-main();
+main()
